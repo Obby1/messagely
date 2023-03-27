@@ -25,6 +25,8 @@ describe("Test User class", function () {
       phone: "+14155551212",
     });
 
+    console.log(`u is equal to ${u}`)
+    console.log(u)
     expect(u.username).toBe("joel");
     expect(u.password).not.toBe(undefined);
   });
@@ -50,6 +52,8 @@ describe("Test User class", function () {
 
   test("can get", async function () {
     let u = await User.get("test");
+    // console.log(`u is equal to ${u}`)
+    // console.log(u)
     expect(u).toEqual({
       username: "test",
       first_name: "Test",

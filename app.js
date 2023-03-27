@@ -8,11 +8,13 @@ const { authenticateJWT } = require("./middleware/auth");
 const ExpressError = require("./expressError")
 const app = express();
 
-// allow both form-encoded and json body parsing
+// allow both form-encoded and json body parsing to turn req.body into an object we can work with in our routes
 app.use(express.json());
+// extended: true: The middleware will use the qs library to parse the data. This allows for the parsing of nested objects and arrays, 
+// resulting in a richer data structure. This is the recommended option for most use cases.
 app.use(express.urlencoded({extended: true}));
 
-// allow connections to all routes from any browser
+// allows connections from different domains or else API will block them due to default same origin policy
 app.use(cors());
 
 // get auth token for all routes
@@ -28,14 +30,14 @@ app.use("/auth", authRoutes);
 app.use("/users", userRoutes);
 app.use("/messages", messageRoutes);
 
-/** 404 handler */
+/** 404 handler for routes that don't exist  */
 
 app.use(function(req, res, next) {
   const err = new ExpressError("Not Found", 404);
   return next(err);
 });
 
-/** general error handler */
+/** general error handler when error passed to next*/
 
 app.use(function(err, req, res, next) {
   res.status(err.status || 500);
